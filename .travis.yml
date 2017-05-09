@@ -1,0 +1,77 @@
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+    - chef-current-trusty
+    packages:
+    - chefdk
+before_install:
+- openssl aes-256-cbc -K $encrypted_9de23c1cf48f_key -iv $encrypted_9de23c1cf48f_iv
+  -in /Users/fredericnowak/Sources/hydra/alphard-chef-newrelic-infrastructure/.chef/hydra-technologies-travis.pem.enc
+  -out .chef/hydra-technologies-travis.pem -d
+- openssl aes-256-cbc -K $encrypted_ab8a84a0c2f1_key -iv $encrypted_ab8a84a0c2f1_iv
+  -in .chef/hydra-technologies-travis.pem.enc -out .chef/hydra-technologies-travis.pem
+  -d
+install:
+- "/opt/chefdk/bin/chef exec bundle install"
+- npm install --save-dev travis-after-all
+branches:
+  only:
+  - master
+  - develop
+  - hotfix/.*
+  - release/.*
+services: docker
+env:
+  global:
+  - TRAVIS_AFTER_ALL=1
+  matrix:
+  # - INSTANCE=default-centos-6
+  # - INSTANCE=default-centos-7
+  # - INSTANCE=default-fedora-latest
+  # - INSTANCE=default-debian-8
+  # - INSTANCE=default-ubuntu-1204
+  # - INSTANCE=default-ubuntu-1404
+  # - INSTANCE=default-ubuntu-1604
+before_script:
+- sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
+  -N DOCKER )
+- eval "$(/opt/chefdk/bin/chef shell-init bash)"
+- "/opt/chefdk/embedded/bin/chef gem install kitchen-dokken"
+- "/opt/chefdk/embedded/bin/chef --version"
+- "/opt/chefdk/embedded/bin/rubocop --version"
+- "/opt/chefdk/embedded/bin/cookstyle --version"
+- "/opt/chefdk/embedded/bin/foodcritic --version"
+- "/opt/chefdk/bin/chef exec coveralls version"
+- |
+  VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+  METADATA_VERSION=$(awk '$1 ~ /^version/ {print $2}' metadata.rb)
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "'$VERSION'" != "$METADATA_VERSION" ]; then
+    echo -e "\e[31mCookbook version is not valid for master branch: ${METADATA_VERSION}, it should be: '${VERSION}'\e[0m"
+    exit 1
+  else
+    echo -e "\e[32mCookbook version: ${METADATA_VERSION}\e[0m"
+  fi
+script:
+- kitchen verify ${INSTANCE}
+after_script:
+- docker images
+- docker ps -a
+- cat .kitchen/logs/kitchen.log
+- "$(npm bin)/travis-after-all; TRAVIS_AFTER_ALL=$?"
+- |
+  if [ $TRAVIS_AFTER_ALL -eq 0 ] && [ $TRAVIS_BRANCH = "master" ]; then
+    chef exec knife cookbook site share alphard-chef-newrelic-infrastructure "Applications" -o ..
+  fi
+matrix:
+  fast_finish: true
+  include:
+  - script: "/opt/chefdk/embedded/bin/rubocop -c .rubocop.yml"
+    env: RUBOCOP=1
+  - script: "/opt/chefdk/embedded/bin/cookstyle"
+    env: COOKSTYLE=1
+  - script: "/opt/chefdk/embedded/bin/foodcritic . --exclude spec -f any -P"
+    env: FOODCRITIC=1
+  # - script: "/opt/chefdk/embedded/bin/rspec"
+  #  env: CHEFSPEC=1

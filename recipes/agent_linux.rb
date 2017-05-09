@@ -1,23 +1,22 @@
 # Installs and configures the New Relic Infrastructure agent on Linux
 
-deb_version_to_codename = {
-  10 => 'buster',
-  9 => 'stretch',
-  8 => 'jessie',
-  7 => 'wheezy',
-  16 => 'xenial',
-  14 => 'trusty',
-  12 => 'precise'
-}
+deb_version_to_codename = { 10 => 'buster',
+                            9 => 'stretch',
+                            8 => 'jessie',
+                            7 => 'wheezy',
+                            16 => 'xenial',
+                            14 => 'trusty',
+                            12 => 'precise' }
 
 case node['platform_family']
 when 'debian'
   # Add public GPG key
-  remote_file '/tmp/newrelic-infra.gpg' do
+  gpg_key_file = "#{Chef::Config[:file_cache_path]}/newrelic-infra.gpg"
+  remote_file gpg_key_file do
     source 'https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
   end
   execute 'add apt key' do
-    command 'apt-key add /tmp/newrelic-infra.gpg'
+    command "apt-key add #{gpg_key_file}"
   end
 
   # Create APT repo file
@@ -30,9 +29,7 @@ when 'debian'
 
   # Update APT repo -- if you don't need this in your regular runs,
   # please customize a private fork
-	execute 'apt-get update' do
-		command 'apt-get update'
-	end
+  execute 'apt-get update'
 
 when 'rhel'
   # Add Yum repo
@@ -47,7 +44,7 @@ when 'rhel'
   end
 
   yum_repository 'newrelic-infra' do
-    description "New Relic Infrastructure"
+    description 'New Relic Infrastructure'
     baseurl "https://download.newrelic.com/infrastructure_agent/linux/yum/el/#{rhel_version}/x86_64"
     gpgkey 'https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
     gpgcheck true
@@ -60,21 +57,15 @@ when 'rhel'
   end
 end
 
-
 # Detect service provider
-if node['platform_family'] == 'rhel' && node['platform_version'] =~ /^7/
-  service_provider = Chef::Provider::Service::Systemd
-else
-  service_provider = Chef::Provider::Service::Upstart
-end
-
+service_provider = Chef::Provider::Service::Upstart
+service_provider = Chef::Provider::Service::Systemd if node['platform_family'] == 'rhel' && node['platform_version'] =~ /^7/
 
 # Install the newrelic-infra agent
 package 'newrelic-infra' do
-  action node['newrelic-infra']['agent_action']
-  version node['newrelic-infra']['agent_version'] unless node['newrelic-infra']['agent_version'].nil?
+  action node['alphard']['newrelic']['infrastructure']['agent_action']
+  version node['alphard']['newrelic']['infrastructure']['agent_version'] unless node['alphard']['newrelic']['infrastructure']['agent_version'].nil?
 end
-
 
 # Setup newrelic-infra service
 service "newrelic-infra" do
@@ -89,11 +80,11 @@ template '/etc/newrelic-infra.yml' do
   group 'root'
   mode '00644'
   variables(
-    'license_key' => node['newrelic-infra']['license_key'],
-    'display_name' => node['newrelic-infra']['display_name'],
-    'log_file' => node['newrelic-infra']['log_file'],
-    'verbose' => node['newrelic-infra']['verbose'],
-    'proxy' => node['newrelic-infra']['proxy']
+    'license_key' => node['alphard']['newrelic']['infrastructure']['license_key'],
+    'display_name' => node['alphard']['newrelic']['infrastructure']['display_name'],
+    'log_file' => node['alphard']['newrelic']['infrastructure']['log_file'],
+    'verbose' => node['alphard']['newrelic']['infrastructure']['verbose'],
+    'proxy' => node['alphard']['newrelic']['infrastructure']['proxy']
   )
   notifies :restart, 'service[newrelic-infra]', :delayed
 end
