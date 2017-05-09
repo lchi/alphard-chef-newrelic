@@ -6,7 +6,7 @@ maintainer_email      'chef@hydra-technologies.net'
 description           'Installs/Configures alphard-chef-newrelic-infrastructure'
 long_description      IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
-recipe                'alphard-chef-newrelic-infrastructure::default', 'Installs/Configures alphard-chef-newrelic-infrastructure'
+recipe                'alphard-chef-newrelic-infrastructure::default', 'Installs/Configures New Relic infrastructure agent'
 
 %w(ubuntu debian centos fedora).each do |os|
   supports os
