@@ -8,9 +8,6 @@ addons:
     - chefdk
 before_install:
 - openssl aes-256-cbc -K $encrypted_9de23c1cf48f_key -iv $encrypted_9de23c1cf48f_iv
-  -in /Users/fredericnowak/Sources/hydra/alphard-chef-newrelic-infrastructure/.chef/hydra-technologies-travis.pem.enc
-  -out .chef/hydra-technologies-travis.pem -d
-- openssl aes-256-cbc -K $encrypted_ab8a84a0c2f1_key -iv $encrypted_ab8a84a0c2f1_iv
   -in .chef/hydra-technologies-travis.pem.enc -out .chef/hydra-technologies-travis.pem
   -d
 install:
