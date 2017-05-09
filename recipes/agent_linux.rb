@@ -58,8 +58,8 @@ when 'rhel'
 end
 
 # Detect service provider
-service_provider = Chef::Provider::Service::Upstart
-service_provider = Chef::Provider::Service::Systemd if node['platform_family'] == 'rhel' && node['platform_version'] =~ /^7/
+# service_provider = Chef::Provider::Service::Upstart
+# service_provider = Chef::Provider::Service::Systemd if node['platform_family'] == 'rhel' && node['platform_version'] =~ /^7/
 
 # Install the newrelic-infra agent
 package 'newrelic-infra' do
@@ -68,8 +68,8 @@ package 'newrelic-infra' do
 end
 
 # Setup newrelic-infra service
-service "newrelic-infra" do
-  provider service_provider
+service 'newrelic-infra' do
+  # provider service_provider
   action [:enable, :start]
 end
 
