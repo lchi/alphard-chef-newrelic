@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-#newrelic_java_agent 'default_java_agent'
+# newrelic_java_agent 'default_java_agent'

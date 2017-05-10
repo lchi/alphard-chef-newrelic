@@ -15,6 +15,6 @@ default['alphard']['newrelic']['infra']['log_file'] = nil
 
 # Java
 default['alphard']['newrelic']['java']['license'] = node['alphard']['newrelic']['license']
-#default['alphard']['newrelic']['java']['jar_path'] = nil
-#default['alphard']['newrelic']['java']['log_path'] = nil
-#default['alphard']['newrelic']['java']['log_file'] = nil
+# default['alphard']['newrelic']['java']['jar_path'] = nil
+# default['alphard']['newrelic']['java']['log_path'] = nil
+# default['alphard']['newrelic']['java']['log_file'] = nil

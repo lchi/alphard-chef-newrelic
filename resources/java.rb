@@ -27,7 +27,6 @@ property :group, name_attribute: true, kind_of: String
 property :jar_dir, name_attribute: true, kind_of: String
 
 action :install do
-
   newrelic = node['alphard']['newrelic']
   java = newrelic['java']
 
@@ -81,7 +80,7 @@ action :install do
     group new_resource.app_group
     mode '0644'
     variables(
-      :resource => new_resource
+      resource: new_resource
     )
     sensitive true
     action :create
@@ -98,5 +97,4 @@ action :install do
     end
     path = ::File.dirname(path)
   end
-
 end

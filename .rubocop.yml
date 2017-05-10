@@ -336,6 +336,8 @@ Metrics/AbcSize:
   Enabled: true
 Metrics/BlockNesting:
   Enabled: true
+Metrics/BlockLength:
+  Enabled: false
 Metrics/ClassLength:
   Enabled: true
 Metrics/ModuleLength:

@@ -18,4 +18,3 @@ unless os.windows?
   end
 
 end
-
