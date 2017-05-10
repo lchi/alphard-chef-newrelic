@@ -1,9 +1,9 @@
-# alphard-chef-newrelic-infrastructure CHANGELOG
+# alphard-chef-newrelic CHANGELOG
 
-This file is used to list changes made in each version of the alphard-chef-newrelic-infrastructure cookbook.
+This file is used to list changes made in each version of the alphard-chef-newrelic cookbook.
 
 ## 0.1.0
-- [your_name] - Initial release of alphard-chef-newrelic-infrastructure
+- [your_name] - Initial release of alphard-chef-newrelic
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

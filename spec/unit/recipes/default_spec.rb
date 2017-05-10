@@ -1,5 +1,5 @@
 #
-# Cookbook:: alphard-chef-newrelic-infrastructure
+# Cookbook:: alphard-chef-newrelic
 # Spec:: default
 #
 # Copyright:: 2017, Hydra Technologies, Inc
@@ -18,7 +18,7 @@
 
 require 'spec_helper'
 
-describe 'alphard-chef-newrelic-infrastructure::default' do
+describe 'alphard-chef-newrelic::default' do
   context 'When all attributes are default, on an Ubuntu 16.04' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:

@@ -72,7 +72,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[alphard-chef-newrelic-infrastructure::default]
+      - recipe[alphard-chef-newrelic::default]
     verifier:
       inspec_tests:
         - test/smoke/default
