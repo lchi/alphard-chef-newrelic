@@ -50,9 +50,6 @@ The `linux` recipe:
 1. Sets up the `newrelic-infra` agent service
 1. Sets the `newrelic-infra.yml` config file
 
-### windows
-(Available in the future)
-
 ## Attributes
 
 See `attributes/defaults.rb` for default values.
