@@ -68,12 +68,25 @@ platforms:
       image: ubuntu:16.04
       pid_one_command: /bin/systemd
 
-
 suites:
   - name: default
     run_list:
-      - recipe[alphard-chef-newrelic::default]
+    - recipe[alphard-chef-newrelic::default]
     verifier:
       inspec_tests:
-        - test/smoke/default
+      - test/smoke/default
     attributes:
+      alphard:
+        newrelic:
+          license: '0000011111222223333344444555556666677777'
+  # - name: java
+  #   run_list:
+  #   - recipe[alphard-chef-newrelic::java]
+  #   verifier:
+  #     inspec_tests:
+  #     - test/smoke/java
+  #   attributes:
+  #     alphard:
+  #       newrelic:
+  #         license: '0000011111222223333344444555556666677777'
+  #

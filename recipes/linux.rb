@@ -1,3 +1,23 @@
+#
+# Author:: Frederic Nowak (<frederic.nowak@alphard.io>)
+# Cookbook:: alphard-chef-newrelic
+# Recipe:: linux
+#
+# Copyright:: 2017, Hydra Technologies, Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 # Installs and configures the New Relic Infrastructure agent on Linux
 
 deb_version_to_codename = { 10 => 'buster',
@@ -10,26 +30,18 @@ deb_version_to_codename = { 10 => 'buster',
 
 case node['platform_family']
 when 'debian'
-  # Add public GPG key
-  gpg_key_file = "#{Chef::Config[:file_cache_path]}/newrelic-infra.gpg"
-  remote_file gpg_key_file do
-    source 'https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
-  end
-  execute 'add apt key' do
-    command "apt-key add #{gpg_key_file}"
-  end
-
   # Create APT repo file
   apt_repository 'newrelic-infra' do
-    uri 'https://download.newrelic.com/infrastructure_agent/linux/apt'
+    uri 'http://download.newrelic.com/infrastructure_agent/linux/apt'
+    key 'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
     distribution deb_version_to_codename[node['platform_version'].to_i]
     components ['main']
     arch 'amd64'
   end
 
-  # Update APT repo -- if you don't need this in your regular runs,
-  # please customize a private fork
-  execute 'apt-get update'
+  apt_update 'newrelic-infra-update' do
+    action :update
+  end
 
 when 'rhel'
   # Add Yum repo
