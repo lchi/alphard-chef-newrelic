@@ -59,7 +59,7 @@ after_script:
 - "$(npm bin)/travis-after-all; TRAVIS_AFTER_ALL=$?"
 - |
   if [ $TRAVIS_AFTER_ALL -eq 0 ] && [ $TRAVIS_BRANCH = "master" ]; then
-    chef exec knife cookbook site share alphard-chef-newrelic-infrastructure "Applications" -o ..
+    chef exec knife cookbook site share alphard-chef-newrelic "Applications" -o ..
   fi
 matrix:
   fast_finish: true

@@ -57,19 +57,14 @@ when 'rhel'
   end
 end
 
-# Detect service provider
-# service_provider = Chef::Provider::Service::Upstart
-# service_provider = Chef::Provider::Service::Systemd if node['platform_family'] == 'rhel' && node['platform_version'] =~ /^7/
-
 # Install the newrelic-infra agent
 package 'newrelic-infra' do
-  action node['alphard']['newrelic']['infrastructure']['agent_action']
-  version node['alphard']['newrelic']['infrastructure']['agent_version'] unless node['alphard']['newrelic']['infrastructure']['agent_version'].nil?
+  action node['alphard']['newrelic']['infra']['agent_action']
+  version node['alphard']['newrelic']['infra']['agent_version'] unless node['alphard']['newrelic']['infra']['agent_version'].nil?
 end
 
 # Setup newrelic-infra service
 service 'newrelic-infra' do
-  # provider service_provider
   action [:enable, :start]
 end
 
@@ -80,11 +75,11 @@ template '/etc/newrelic-infra.yml' do
   group 'root'
   mode '00644'
   variables(
-    'license_key' => node['alphard']['newrelic']['infrastructure']['license_key'],
-    'display_name' => node['alphard']['newrelic']['infrastructure']['display_name'],
-    'log_file' => node['alphard']['newrelic']['infrastructure']['log_file'],
-    'verbose' => node['alphard']['newrelic']['infrastructure']['verbose'],
-    'proxy' => node['alphard']['newrelic']['infrastructure']['proxy']
+    'license_key' => node['alphard']['newrelic']['infra']['license_key'],
+    'display_name' => node['alphard']['newrelic']['infra']['display_name'],
+    'log_file' => node['alphard']['newrelic']['infra']['log_file'],
+    'verbose' => node['alphard']['newrelic']['infra']['verbose'],
+    'proxy' => node['alphard']['newrelic']['infra']['proxy']
   )
   notifies :restart, 'service[newrelic-infra]', :delayed
 end

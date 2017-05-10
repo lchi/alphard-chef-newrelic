@@ -1,6 +1,6 @@
 # # encoding: utf-8
 
-# Inspec test for recipe alphard-chef-newrelic-infrastructure::default
+# Inspec test for recipe alphard-chef-newrelic::default
 
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/

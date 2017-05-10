@@ -1,11 +1,11 @@
-[![Cookbook Version](https://img.shields.io/cookbook/v/alphard-chef-alphard-chef-newrelic-infrastructurestructure.svg)](https://supermarket.chef.io/cookbooks/alphard-chef-alphard-chef-newrelic-infrastructurestructure)
+[![Cookbook Version](https://img.shields.io/cookbook/v/alphard-chef-newrelic.svg)](https://supermarket.chef.io/cookbooks/alphard-chef-newrelic)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build Status](https://travis-ci.org/hydra-technologies/alphard-chef-alphard-chef-newrelic-infrastructurestructure.svg?branch=master)](https://travis-ci.org/hydra-technologies/alphard-chef-alphard-chef-newrelic-infrastructurestructure)
-[![Coverage Status](https://coveralls.io/repos/github/hydra-technologies/alphard-chef-alphard-chef-newrelic-infrastructurestructure/badge.svg?branch=master)](https://coveralls.io/github/hydra-technologies/alphard-chef-alphard-chef-newrelic-infrastructurestructure?branch=master)
+[![Build Status](https://travis-ci.org/hydra-technologies/alphard-chef-newrelic.svg?branch=master)](https://travis-ci.org/hydra-technologies/alphard-chef-newrelic)
+[![Coverage Status](https://coveralls.io/repos/github/hydra-technologies/alphard-chef-newrelic/badge.svg?branch=master)](https://coveralls.io/github/hydra-technologies/alphard-chef-newrelic?branch=master)
 
-# Cookbook 'alphard-chef-alphard-chef-newrelic-infrastructurestructure'
+# Cookbook 'alphard-chef-newrelic'
 
-This cookbook installs and configures the New Relic Infrastructure agent.
+This cookbook installs and configures New Relic agents.
 
 ## Requirements
 
@@ -36,40 +36,41 @@ This cookbook installs and configures the New Relic Infrastructure agent.
 ## Recipes
 
 ### default
-Include the default recipe to install and configure the New Relic Infrastructure agent.
 
-### agent
-The `agent` recipe will validate required attributes and do basic platform detection to decide which platform specific recipe to include.
+Include the default recipe to install and configure the New Relic infrastructure agent.
 
-### agent_linux
-The `agent_linux` recipe:
+### default
+The `default` recipe will validate required attributes and do basic platform detection to decide which platform specific recipe to include.
 
-1. Adds the `alphard-chef-newrelic-infrastructure` package repository source
-1. Installs|upgrades|removes `alphard-chef-newrelic-infrastructure` package
-1. Sets up the `alphard-chef-newrelic-infrastructure` agent service
-1. Sets the `alphard-chef-newrelic-infrastructure.yml` config file
+### linux
+The `linux` recipe:
 
-### agent_windows
+1. Adds the `newrelic-infra` package repository source
+1. Installs|upgrades|removes `newrelic-infra` package
+1. Sets up the `newrelic-infra` agent service
+1. Sets the `newrelic-infra.yml` config file
+
+### windows
 (Available in the future)
 
 ## Attributes
 
 See `attributes/defaults.rb` for default values.
 
-- `node['alphard']['newrelic']['infrastructure']['license_key']` - Your New Relic license key.
-- `node['alphard']['newrelic']['infrastructure']['log_file']` - Override system log file location by providing Log path and file name.
-- `node['alphard']['newrelic']['infrastructure']['verbose']` - Log verbosity setting. Type: String
-- `node['alphard']['newrelic']['infrastructure']['proxy']` - Your proxy url if required.
-- `node['alphard']['newrelic']['infrastructure']['agent_action']` - `alphard-chef-newrelic-infrastructure` package actions. Values:
+- `node['alphard']['newrelic']['infra']['license_key']` - Your New Relic license key.
+- `node['alphard']['newrelic']['infra']['log_file']` - Override system log file location by providing Log path and file name.
+- `node['alphard']['newrelic']['infra']['verbose']` - Log verbosity setting. Type: String
+- `node['alphard']['newrelic']['infra']['proxy']` - Your proxy url if required.
+- `node['alphard']['newrelic']['infra']['agent_action']` - `alphard-chef-newrelic` package actions. Values:
   - `'install'`: _(Default)_ Installs package. If `'agent_version'` is specified, installs specific version.
   - `'upgrade'`: Installs package and/or ensures it's the latest version.
   - `'remove'`:  Removes the package.
-- `node['alphard']['newrelic']['infrastructure']['agent_version']` - Specify `alphard-chef-newrelic-infrastructure` package version to pin.
+- `node['alphard']['newrelic']['infra']['agent_version']` - Specify `alphard-chef-newrelic` package version to pin.
 
 ## Usage
 
-1. Add the `alphard-chef-newrelic-infrastructure` cookbook dependency to your `metadata.rb` or `Berksfile`
-1. Set `node['alphard']['newrelic']['infrastructure']['license_key']` attribute with your New Relic license key
+1. Add the `alphard-chef-newrelic` cookbook dependency to your `metadata.rb` or `Berksfile`
+1. Set `node['alphard']['newrelic']['infra']['license_key']` attribute with your New Relic license key
 1. Include `default` recipe or add it to your run list
 
 ## Contributing
