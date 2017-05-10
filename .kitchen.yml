@@ -74,7 +74,7 @@ suites:
     - recipe[alphard-chef-newrelic::default]
     verifier:
       inspec_tests:
-      - test/smoke/default
+      - test/infra
     attributes:
       alphard:
         newrelic:
