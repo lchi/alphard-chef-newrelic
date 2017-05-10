@@ -70,5 +70,5 @@ matrix:
     env: COOKSTYLE=1
   - script: "/opt/chefdk/embedded/bin/foodcritic . --exclude spec -f any -P"
     env: FOODCRITIC=1
-  # - script: "/opt/chefdk/embedded/bin/rspec"
-  #  env: CHEFSPEC=1
+  - script: "/opt/chefdk/embedded/bin/rspec"
+    env: CHEFSPEC=1
