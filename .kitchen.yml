@@ -77,7 +77,7 @@ platforms:
 suites:
   - name: infra
     run_list:
-    - recipe[alphard-chef-newrelic::infra]
+    - recipe[alphard-chef-newrelic::default]
     verifier:
       inspec_tests:
       - test/infra
