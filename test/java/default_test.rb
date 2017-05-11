@@ -8,7 +8,7 @@
 directory = '/opt/newrelic/java_agent'
 
 describe file(directory) do
- it { should be_directory }
+  it { should be_directory }
 end
 
 describe file("#{directory}/newrelic.jar") do

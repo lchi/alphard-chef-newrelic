@@ -64,7 +64,7 @@ action :install do
   archive_file = "#{directory}/#{archive_name}"
   archive_url = "https://download.newrelic.com/newrelic/java-agent/newrelic-agent/#{version}/#{archive_name}"
 
-  remote_file "#{archive_file}" do
+  remote_file archive_file.to_s do
     source archive_url
     user user
     group group

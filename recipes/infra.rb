@@ -22,8 +22,8 @@
 
 newrelic_linux_recipe = 'alphard-chef-newrelic::linux'
 newrelic_error_message =
-    'The New Relic infrastructure agent is not currently supported on this platform: ' +
-        "#{node['platform']} #{node['platform_version']}!"
+  'The New Relic infrastructure agent is not currently supported on this platform: ' \
+    "#{node['platform']} #{node['platform_version']}!"
 
 case node['platform_family']
 when 'debian'
