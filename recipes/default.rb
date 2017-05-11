@@ -28,29 +28,29 @@ end
 
 newrelic_linux_recipe = 'alphard-chef-newrelic::linux'
 newrelic_error_message =
-    'The New Relic infrastructure agent is not currently supported on this platform: ' \
-    "#{node['platform']} #{node['platform_version']}!"
+  'The New Relic infrastructure agent is not currently supported on this platform: ' \
+  "#{node['platform']} #{node['platform_version']}!"
 
 case node['platform_family']
-  when 'debian'
-    # TODO: Add better debian platform/version detection
-    include_recipe newrelic_linux_recipe
-  when 'rhel'
-    case node['platform']
-      when 'centos'
-        case node['platform_version']
-          when /^6/, /^7/
-            include_recipe newrelic_linux_recipe
-          else
-            raise newrelic_error_message
-        end
-      when 'amazon'
-        include_recipe newrelic_linux_recipe
-      else
-        raise newrelic_error_message
+when 'debian'
+  # TODO: Add better debian platform/version detection
+  include_recipe newrelic_linux_recipe
+when 'rhel'
+  case node['platform']
+  when 'centos'
+    case node['platform_version']
+    when /^6/, /^7/
+      include_recipe newrelic_linux_recipe
+    else
+      raise newrelic_error_message
     end
-  when 'windows'
-    raise newrelic_error_message
+  when 'amazon'
+    include_recipe newrelic_linux_recipe
   else
     raise newrelic_error_message
+  end
+when 'windows'
+  raise newrelic_error_message
+else
+  raise newrelic_error_message
 end
