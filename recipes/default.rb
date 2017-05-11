@@ -1,5 +1,5 @@
 #
-# Author:: Frederic Nowak (<frederic.nowak@alphard.io>)
+# Author:: Frederic Nowak (<frederic.nowak@hydra-technologies.net>)
 # Cookbook:: alphard-chef-newrelic
 # Recipe:: default
 #
@@ -18,32 +18,8 @@
 # limitations under the License.
 #
 
-# Ensure license key is provided
-if node['alphard']['newrelic']['infra']['license_key'].nil? || node['alphard']['newrelic']['infra']['license_key'].empty?
-  raise 'No New Relic license key provided'
-end
+# Ensures a license has benn provided
 
-# Ensure platform & version is supported
-case node['platform_family']
-when 'debian'
-  # TODO: Add better debian platform/version detection
-  include_recipe 'alphard-chef-newrelic::linux'
-when 'rhel'
-  case node['platform']
-  when 'centos'
-    case node['platform_version']
-    when /^6/, /^7/
-      include_recipe 'alphard-chef-newrelic::linux'
-    else
-      raise 'The New Relic Infrastructure agent is not currently supported on this platform version'
-    end
-  when 'amazon'
-    include_recipe 'alphard-chef-newrelic::linux'
-  else
-    raise 'The New Relic Infrastructure agent is not currently supported on this platform'
-  end
-when 'windows'
-  raise 'The New Relic Infrastructure agent is not currently supported on windows'
-else
-  raise 'The New Relic Infrastructure agent is not currently supported on this platform'
+if node['alphard']['newrelic']['license'].nil? || node['alphard']['newrelic']['license'].empty?
+  raise 'no New Relic license key provided!'
 end

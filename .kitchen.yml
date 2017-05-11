@@ -57,21 +57,27 @@ platforms:
     driver:
       image: ubuntu-upstart:12.04
       pid_one_command: /sbin/init
+      intermediate_instructions:
+        - RUN apt-get update
 
   - name: ubuntu-14.04
     driver:
       image: ubuntu-upstart:14.04
       pid_one_command: /sbin/init
+      intermediate_instructions:
+        - RUN apt-get update
 
   - name: ubuntu-16.04
     driver:
       image: ubuntu:16.04
       pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN apt-get update
 
 suites:
-  - name: default
+  - name: infra
     run_list:
-    - recipe[alphard-chef-newrelic::default]
+    - recipe[alphard-chef-newrelic::infra]
     verifier:
       inspec_tests:
       - test/infra
@@ -79,14 +85,15 @@ suites:
       alphard:
         newrelic:
           license: '0000011111222223333344444555556666677777'
-  # - name: java
-  #   run_list:
-  #   - recipe[alphard-chef-newrelic::java]
-  #   verifier:
-  #     inspec_tests:
-  #     - test/smoke/java
-  #   attributes:
-  #     alphard:
-  #       newrelic:
-  #         license: '0000011111222223333344444555556666677777'
-  #
+  - name: java
+    run_list:
+    - recipe[alphard-chef-newrelic::java]
+    verifier:
+      inspec_tests:
+      - test/java
+    attributes:
+      alphard:
+        newrelic:
+          license: '0000011111222223333344444555556666677777'
+          java:
+            directory: '/opt/newrelic/java_agent'

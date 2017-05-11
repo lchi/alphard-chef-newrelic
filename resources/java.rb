@@ -22,25 +22,31 @@ resource_name :newrelic_java_agent
 actions :nothing, :install
 default_action :install
 
-property :user, name_attribute: true, kind_of: String
-property :group, name_attribute: true, kind_of: String
-property :jar_dir, name_attribute: true, kind_of: String
+property :user, kind_of: String
+property :group, kind_of: String
+property :version, kind_of: String
+property :install_directory, kind_of: String
+property :cookbook, kind_of: String
+property :template_source, kind_of: String
+property :configuration, kind_of: String
 
 action :install do
   newrelic = node['alphard']['newrelic']
   java = newrelic['java']
 
-  user = newrelic['user']
-  group = newrelic['group']
-  version = java['version']
+  license = newrelic['license']
+  user = new_resource.user || newrelic['user']
+  group = new_resource.group || newrelic['group']
+  version = new_resource.version || java['version'] || 'latest'
   version = 'current' if version == 'latest'
-  jar_dir = java['jar_dir']
-  jar_file = 'newrelic-java.zip'
-  jar_file = "newrelic-java-#{version}.zip" unless version == 'latest'
+  directory = new_resource.install_directory || java['directory']
+  cookbook = new_resource.cookbook || 'alphard-chef-newrelic'
+  template = new_resource.template_source || java['template']
+  configuration = new_resource.configuration || java['configuration']
 
   # Creates jar directory
 
-  directory jar_dir do
+  directory directory do
     owner user
     group group
     recursive true
@@ -50,12 +56,16 @@ action :install do
 
   # Downloads and installs jar file
 
-  package 'unzip'
+  apt_update 'update' # TODO: Generalize this for all platforms
+  apt_package 'zip'   # TODO: Generalize this for all platforms
 
-  jar_url = "https://download.newrelic.com/newrelic/java-agent/newrelic-agent/#{version}/#{jar_file}"
+  archive_name = 'newrelic-java.zip'
+  archive_name = "newrelic-java-#{version}.zip" unless version == 'current'
+  archive_file = "#{directory}/#{archive_name}"
+  archive_url = "https://download.newrelic.com/newrelic/java-agent/newrelic-agent/#{version}/#{archive_name}"
 
-  remote_file "#{jar_dir}/#{jar_file}" do
-    source jar_url
+  remote_file "#{archive_file}" do
+    source archive_url
     user user
     group group
     mode '0664'
@@ -64,37 +74,24 @@ action :install do
   end
 
   execute 'unzip_jar' do
-    cwd jar_dir
     user user
     group group
-    command "unzip -oj #{jar_file} newrelic/newrelic.jar"
+    command "unzip -oj #{archive_file} -d #{directory}"
     action :nothing
   end
 
   # Creates configuration file
 
-  template "#{new_resource.install_dir}/newrelic.yml" do
-    cookbook new_resource.template_cookbook
-    source new_resource.template_source
-    owner new_resource.app_user
-    group new_resource.app_group
+  template "#{directory}/newrelic.yml" do
+    cookbook cookbook
+    source template
+    owner user
+    group group
     mode '0644'
-    variables(
-      resource: new_resource
+    variables configuration.merge(
+      license_key: license
     )
     sensitive true
     action :create
-  end
-
-  # Grants write permissions to log files
-
-  path = new_resource.logfile_path
-  until path.nil? || path.empty? || path == ::File::SEPARATOR
-    directory path do
-      group group
-      mode '0775'
-      action :create
-    end
-    path = ::File.dirname(path)
   end
 end

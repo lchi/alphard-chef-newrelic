@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-# Installs and configures the New Relic Infrastructure agent on Linux
-
 deb_version_to_codename = { 10 => 'buster',
                             9 => 'stretch',
                             8 => 'jessie',
@@ -30,7 +28,8 @@ deb_version_to_codename = { 10 => 'buster',
 
 case node['platform_family']
 when 'debian'
-  # Create APT repo file
+  # Creates APT repo file
+
   apt_repository 'newrelic-infra' do
     uri 'http://download.newrelic.com/infrastructure_agent/linux/apt'
     key 'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
@@ -44,7 +43,8 @@ when 'debian'
   end
 
 when 'rhel'
-  # Add Yum repo
+  # Adds Yum repo
+
   case node['platform']
   when 'centos'
     rhel_version = node['platform_version'].to_i
@@ -63,35 +63,35 @@ when 'rhel'
     repo_gpgcheck true
   end
 
-  # Update Yum repo
+  # Updates Yum repo
+
   execute 'Update Infra Yum repo' do
     command "yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'"
   end
 end
 
 # Install the newrelic-infra agent
+
 package 'newrelic-infra' do
-  action node['alphard']['newrelic']['infra']['agent_action']
-  version node['alphard']['newrelic']['infra']['agent_version'] unless node['alphard']['newrelic']['infra']['agent_version'].nil?
+  action node['alphard']['newrelic']['infra']['action']
+  version node['alphard']['newrelic']['infra']['version'] unless node['alphard']['newrelic']['infra']['version'].nil?
 end
 
 # Setup newrelic-infra service
+
 service 'newrelic-infra' do
   action [:enable, :start]
 end
 
 # Lay down newrelic-infra agent config
+
 template '/etc/newrelic-infra.yml' do
   source 'newrelic-infra.yml.erb'
   owner 'root'
   group 'root'
   mode '00644'
-  variables(
-    'license_key' => node['alphard']['newrelic']['infra']['license_key'],
-    'display_name' => node['alphard']['newrelic']['infra']['display_name'],
-    'log_file' => node['alphard']['newrelic']['infra']['log_file'],
-    'verbose' => node['alphard']['newrelic']['infra']['verbose'],
-    'proxy' => node['alphard']['newrelic']['infra']['proxy']
+  variables node['alphard']['newrelic']['infra']['configuration'].merge(
+    license_key: node['alphard']['newrelic']['infra']['license']
   )
   notifies :restart, 'service[newrelic-infra]', :delayed
 end
