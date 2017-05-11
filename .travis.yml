@@ -30,7 +30,7 @@ env:
   # - INSTANCE=default-debian-8
   # - INSTANCE=default-ubuntu-1204
   # - INSTANCE=default-ubuntu-1404
-  # - INSTANCE=infra-ubuntu-1604
+  - INSTANCE=infra-ubuntu-1604
   - INSTANCE=java-ubuntu-1604
 before_script:
 - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
