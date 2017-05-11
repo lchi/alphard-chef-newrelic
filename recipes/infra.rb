@@ -1,7 +1,7 @@
 #
 # Author:: Frederic Nowak (<frederic.nowak@alphard.io>)
 # Cookbook:: alphard-chef-newrelic
-# Recipe:: default
+# Recipe:: infra
 #
 # Copyright:: 2017, Hydra Technologies, Inc
 #
@@ -18,32 +18,33 @@
 # limitations under the License.
 #
 
-# Ensure license key is provided
-if node['alphard']['newrelic']['infra']['license'].nil? || node['alphard']['newrelic']['infra']['license'].empty?
-  raise 'No New Relic license key provided'
-end
+# Ensures platform & version is supported
 
-# Ensure platform & version is supported
+newrelic_linux_recipe = 'alphard-chef-newrelic::linux'
+newrelic_error_message =
+    'The New Relic infrastructure agent is not currently supported on this platform: ' +
+        "#{node['platform']} #{node['platform_version']}!"
+
 case node['platform_family']
 when 'debian'
   # TODO: Add better debian platform/version detection
-  include_recipe 'alphard-chef-newrelic::linux'
+  include_recipe newrelic_linux_recipe
 when 'rhel'
   case node['platform']
   when 'centos'
     case node['platform_version']
     when /^6/, /^7/
-      include_recipe 'alphard-chef-newrelic::linux'
+      include_recipe newrelic_linux_recipe
     else
-      raise 'The New Relic Infrastructure agent is not currently supported on this platform version'
+      raise newrelic_error_message
     end
   when 'amazon'
-    include_recipe 'alphard-chef-newrelic::linux'
+    include_recipe newrelic_linux_recipe
   else
-    raise 'The New Relic Infrastructure agent is not currently supported on this platform'
+    raise newrelic_error_message
   end
 when 'windows'
-  raise 'The New Relic Infrastructure agent is not currently supported on windows'
+  raise newrelic_error_message
 else
-  raise 'The New Relic Infrastructure agent is not currently supported on this platform'
+  raise newrelic_error_message
 end
