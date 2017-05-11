@@ -1,5 +1,5 @@
 name                  'alphard-chef-newrelic'
-version               '0.5.0'
+version               '0.5.1'
 license               'Apache-2.0'
 maintainer            'Hydra Technologies, Inc'
 maintainer_email      'chef@hydra-technologies.net'

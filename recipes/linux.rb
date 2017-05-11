@@ -91,7 +91,7 @@ template '/etc/newrelic-infra.yml' do
   group 'root'
   mode '00644'
   variables node['alphard']['newrelic']['infra']['configuration'].merge(
-    license_key: node['alphard']['newrelic']['infra']['license']
+    license_key: node['alphard']['newrelic']['license']
   )
   notifies :restart, 'service[newrelic-infra]', :delayed
 end
