@@ -84,7 +84,7 @@ suites:
     attributes:
       alphard:
         newrelic:
-          license: '0000011111222223333344444555556666677777'
+          license: '0000ffff0000ffff0000ffff0000ffff0000ffff'
   - name: java
     run_list:
     - recipe[alphard-chef-newrelic::java]
@@ -94,6 +94,6 @@ suites:
     attributes:
       alphard:
         newrelic:
-          license: '0000011111222223333344444555556666677777'
+          license: '0000ffff0000ffff0000ffff0000ffff0000ffff'
           java:
             directory: '/opt/newrelic/java_agent'
