@@ -28,7 +28,7 @@ property :version, kind_of: String
 property :install_directory, kind_of: String
 property :cookbook, kind_of: String
 property :template_source, kind_of: String
-property :configuration, kind_of: String
+property :configuration, kind_of: Hash
 
 action :install do
   newrelic = node['alphard']['newrelic']
@@ -43,7 +43,8 @@ action :install do
   directory = new_resource.install_directory || java['directory']
   cookbook = new_resource.cookbook || 'alphard-chef-newrelic'
   template = new_resource.template_source || java['template']
-  configuration = new_resource.configuration || java['configuration']
+  configuration = java['configuration'] || {}
+  configuration = configuration.merge(new_resource.configuration || {})
 
   # Creates jar directory
 
