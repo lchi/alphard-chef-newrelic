@@ -30,7 +30,8 @@ env:
   # - INSTANCE=default-debian-8
   # - INSTANCE=default-ubuntu-1204
   # - INSTANCE=default-ubuntu-1404
-  # - INSTANCE=default-ubuntu-1604
+  # - INSTANCE=infra-ubuntu-1604
+  # - INSTANCE=java-ubuntu-1604
 before_script:
 - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
   -N DOCKER )
@@ -70,5 +71,5 @@ matrix:
     env: COOKSTYLE=1
   - script: "/opt/chefdk/embedded/bin/foodcritic . --exclude spec -f any -P"
     env: FOODCRITIC=1
-  # - script: "/opt/chefdk/embedded/bin/rspec"
-  #  env: CHEFSPEC=1
+  - script: "/opt/chefdk/embedded/bin/rspec"
+    env: CHEFSPEC=1

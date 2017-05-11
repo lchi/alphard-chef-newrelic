@@ -1,12 +1,14 @@
 name                  'alphard-chef-newrelic'
-version               '0.3.0'
+version               '0.4.0'
 license               'Apache-2.0'
 maintainer            'Hydra Technologies, Inc'
 maintainer_email      'chef@hydra-technologies.net'
-description           'Installs/Configures alphard-chef-newrelic'
+description           'Installs/Configures New Relic agents'
 long_description      IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
 recipe                'alphard-chef-newrelic::default', 'Installs/Configures New Relic infrastructure agent'
+recipe                'alphard-chef-newrelic::linux', 'Installs/Configures New Relic linux infrastructure agent'
+recipe                'alphard-chef-newrelic::java', 'Installs/Configures New Relic java application agent'
 
 %w(ubuntu debian centos fedora).each do |os|
   supports os

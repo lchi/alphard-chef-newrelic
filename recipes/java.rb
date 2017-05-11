@@ -1,7 +1,7 @@
 #
-# Author:: Frederic Nowak (<frederic.nowak@hydra-technologies.net>)
+# Author:: Frederic Nowak (<frederic.nowak@alphard.io>)
 # Cookbook:: alphard-chef-newrelic
-# Recipe:: default
+# Recipe:: linux
 #
 # Copyright:: 2017, Hydra Technologies, Inc
 #
@@ -18,8 +18,4 @@
 # limitations under the License.
 #
 
-# Ensures a license has benn provided
-
-if node['alphard']['newrelic']['license'].nil? || node['alphard']['newrelic']['license'].empty?
-  raise 'no New Relic license key provided!'
-end
+newrelic_java_agent 'default_java_agent'
