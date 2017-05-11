@@ -37,7 +37,11 @@ enable_auto_transaction_naming: true
 # For example, to report data to"My Application" and "My Application 2" use this:
 # app_name: My Application;My Application 2
 # This setting is required.
+<% if @app_name.nil? %>
+app_name: My Java Application
+<% else %>
 app_name: <%= @app_name %>
+<% end %>
 
 # In order for high security to be enabled, this property must be set to true and the high security property in the New Relic user
 # interface must be enabled. Enabling high security means SSL is turned on, request and message queue parameters are not collected, and

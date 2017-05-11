@@ -34,6 +34,7 @@ action :install do
   newrelic = node['alphard']['newrelic']
   java = newrelic['java']
 
+  name = new_resource.name
   license = newrelic['license']
   user = new_resource.user || newrelic['user']
   group = new_resource.group || newrelic['group']
@@ -89,7 +90,8 @@ action :install do
     group group
     mode '0644'
     variables configuration.merge(
-      license_key: license
+      license_key: license,
+      app_name: configuration['app_name'] || name
     )
     sensitive true
     action :create
