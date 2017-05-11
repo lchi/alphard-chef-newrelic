@@ -28,12 +28,13 @@ property :version, kind_of: String
 property :install_directory, kind_of: String
 property :cookbook, kind_of: String
 property :template_source, kind_of: String
-property :configuration, kind_of: String
+property :configuration, kind_of: Hash
 
 action :install do
   newrelic = node['alphard']['newrelic']
   java = newrelic['java']
 
+  name = new_resource.name
   license = newrelic['license']
   user = new_resource.user || newrelic['user']
   group = new_resource.group || newrelic['group']
@@ -42,7 +43,8 @@ action :install do
   directory = new_resource.install_directory || java['directory']
   cookbook = new_resource.cookbook || 'alphard-chef-newrelic'
   template = new_resource.template_source || java['template']
-  configuration = new_resource.configuration || java['configuration']
+  configuration = java['configuration'] || {}
+  configuration = configuration.merge(new_resource.configuration || {})
 
   # Creates jar directory
 
@@ -89,7 +91,8 @@ action :install do
     group group
     mode '0644'
     variables configuration.merge(
-      license_key: license
+      license_key: license,
+      app_name: configuration['app_name'] || name
     )
     sensitive true
     action :create
