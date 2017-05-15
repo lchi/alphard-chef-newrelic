@@ -9,6 +9,8 @@ long_description      IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 recipe                'alphard-chef-newrelic::default', 'Installs/Configures New Relic linux infrastructure agent'
 recipe                'alphard-chef-newrelic::java', 'Installs/Configures New Relic java application agent'
 
+depends               'apt', '>= 0.0.0'
+
 %w(ubuntu debian centos fedora).each do |os|
   supports os
 end
