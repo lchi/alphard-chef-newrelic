@@ -36,10 +36,7 @@ when 'debian'
     distribution deb_version_to_codename[node['platform_version'].to_i]
     components ['main']
     arch 'amd64'
-  end
-
-  apt_update 'newrelic-infra-update' do
-    action :update
+    notifies :run, 'execute[apt-get update]', :immediately
   end
 
 when 'rhel'
