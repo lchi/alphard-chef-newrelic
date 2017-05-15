@@ -30,6 +30,8 @@ case node['platform_family']
 when 'debian'
   # Creates APT repo file
 
+  include_recipe 'apt'
+
   apt_repository 'newrelic-infra' do
     uri 'http://download.newrelic.com/infrastructure_agent/linux/apt'
     key 'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg'
