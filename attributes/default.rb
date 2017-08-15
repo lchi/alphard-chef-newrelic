@@ -1,7 +1,8 @@
 default['alphard']['newrelic']['license'] = nil
 
 # Infra
-default['alphard']['newrelic']['infra']['action'] = 'install'
+default['alphard']['newrelic']['infra']['action'] = :remove
+default['alphard']['newrelic']['infra']['service_action'] = :nothing
 default['alphard']['newrelic']['infra']['version'] = nil
 default['alphard']['newrelic']['infra']['configuration'] =
   { license_key: node['alphard']['newrelic']['license'],

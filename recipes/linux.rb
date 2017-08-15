@@ -79,7 +79,7 @@ end
 # Setup newrelic-infra service
 
 service 'newrelic-infra' do
-  action [:enable, :start]
+  action node['alphard']['newrelic']['infra']['service_action']
 end
 
 # Lay down newrelic-infra agent config
